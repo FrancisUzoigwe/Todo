@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Poppin;
+  src: url(/public/fonts/Poppins-Regular.ttf);
+}
+
+.Poppin {
+  font-family: Poppin;
+}
+:root {
+  font-family: Poppin;
+  background: rgb(241, 241, 241);
+  line-height: 1.5;
+  font-weight: 400;
+  /* margin: 10px; */
+  padding: 3px;
+}
