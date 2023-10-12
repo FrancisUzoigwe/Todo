@@ -7,6 +7,7 @@ import {
   viewAllUser,
   viewOne,
 } from "../controller/userController";
+
 const router = express.Router();
 router.route("/register").post(registerUser);
 router.route("/signin").post(signinUser);
