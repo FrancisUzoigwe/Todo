@@ -33,6 +33,7 @@ export const signinUser = async (req: Request, res: Response) => {
       if (checked) {
         return res.status(200).json({
           message: "You're successfully logged in",
+          data: user?._id,
         });
       } else {
         return res.status(400).json({
