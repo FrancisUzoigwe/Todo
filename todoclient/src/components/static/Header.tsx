@@ -4,6 +4,8 @@ import { SiTask } from "react-icons/si";
 import Swal from "sweetalert2";
 const Header = () => {
   const [state, setState] = useUser();
+console.log(typeof state);
+
   return (
     <div className="w-full h-[80px] bg-black text-white flex justify-center items-center">
       <div className="w-[90%] h-full flex justify-between items-center">

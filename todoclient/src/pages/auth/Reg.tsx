@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 
 const Reg = () => {
   const [state, setState] = useUser();
+  console.log(typeof state);
+  
   const [checked, setChecked] = useState<boolean>(false);
 
   const Schema = yup.object({

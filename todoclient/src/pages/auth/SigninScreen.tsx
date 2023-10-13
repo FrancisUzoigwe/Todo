@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 
 const Reg = () => {
   const [state, setState] = useUser();
+  console.log(typeof state);
+
   // console.log(state);
 
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Reg = () => {
           timer: 2000,
           text: "Signed in successfully",
         }).then(() => {
-          navigate("/home");
+          navigate("/");
         });
       } else {
         Swal.fire({
