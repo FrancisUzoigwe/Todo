@@ -1,11 +1,12 @@
-import { Navigate } from "react-router-dom";
+import React, { PropsWithChildren } from "react";
 import useUser from "../global/globalFile";
-import { PropsWithChildren } from "react";
+import { Navigate } from "react-router-dom";
 
 const PrivateRoute: React.FC<PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useUser();
-  console.log(setState);
-  return <div>{state ? <div>{children}</div> : <Navigate to="/" />}</div>;
+  const [state] = useUser();
+  return (
+    <div>{state ? <div>{children}</div> : <Navigate to="/" />}</div>
+  );
 };
 
 export default PrivateRoute;

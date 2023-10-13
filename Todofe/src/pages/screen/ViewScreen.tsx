@@ -1,24 +1,41 @@
-import { AiFillDelete } from "react-icons/ai";
-import { RxUpdate } from "react-icons/rx";
+import { MdAutoDelete } from "react-icons/md";
+import { useUserTask } from "../../hooks/useTanstack";
+import useUser from "../../global/globalFile";
+import { deleteOne } from "../../apis/todoApi";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const ViewScreen = () => {
+  const [state]: any = useUser();
+  const { data }: any = useUserTask(state);
+  const [parent] = useAutoAnimate();
   return (
-    <div className="w-full h-auto flex justify-center bg-green-400">
-      <div className="w-[95%] flex mt-5 flex-wrap">
-        <div className="w-[330px] h-[200px] rounded-md bg-white flex my-5 flex-col items-center max-sm:h-[160px] max-sm:text-[14px]  mx-5">
-          <div className="w-[90%] border rounded-md h-[150px] mt-2"></div>
-          <div className="w-[60%] max-sm:mb-2">
-            <div className="flex items-center justify-between mt-[6px] ">
-              <div className="hover:cursor-pointer">
-                <RxUpdate className="text-2xl" />
+    <div>
+      {data?.map((props: any) => (
+        <div
+          key={props._id}
+          className="w-full min-h-[100px] flex justify-between items-center rounded-xl bg-white mb-2"
+        >
+          <div className="w-[90%] h-full" ref={parent}>
+            <div className="ml-5 h-full flex flex-col justify-center w-full">
+              <div className="my-3 font-bold text-[18px] w-[90%]  h-auto ">
+                {props?.title}
               </div>
-              <div className="hover:cursor-pointer">
-                <AiFillDelete className="text-2xl" />
+              <div className="mb-3 text-[15px] w-[90%]  h-auto">
+                {props?.description}
               </div>
             </div>
           </div>
+          <div
+            className="mr-5"
+            onClick={() => {
+              deleteOne(props._id);
+            }}
+            ref={parent}
+          >
+            <MdAutoDelete className="text-3xl text-red-500" />
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

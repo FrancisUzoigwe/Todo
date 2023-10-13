@@ -1,10 +1,9 @@
-
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-const signUser = atomWithStorage("myuser", {} || null);
+const signUser = atomWithStorage("myUser", {} || null);
 
-const useUser = () => {
+ const useUser = () => {
   return useAtom(signUser);
 };
 

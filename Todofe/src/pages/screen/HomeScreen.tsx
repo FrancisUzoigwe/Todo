@@ -1,9 +1,11 @@
-import useUser from "../../global/globalFile";
+import ViewScreen from "./ViewScreen";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
-// import { createTask } from "../../api/todoApi";
-
+import useUser from "../../global/globalFile";
+import { createTodo } from "../../apis/todoApi";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Swal from "sweetalert2";
 const HomeScreen = () => {
   const [state] = useUser();
   const Schema = yup.object({
@@ -11,46 +13,59 @@ const HomeScreen = () => {
     description: yup.string().required(),
   });
 
-  const { register, handleSubmit } = useForm({
+  const { register, reset, handleSubmit } = useForm({
     resolver: yupResolver(Schema),
   });
 
-  const onHandleSubmit = handleSubmit((data) => {
-    console.log("Created:", data);
+  const onHandleSubmit = handleSubmit(async (data: any) => {
+    const { description, title } = data;
+    createTodo(state, { description, title }).then((res: any) => {
+      reset();
+      if (res) {
+        Swal.fire({
+          icon: "success",
+          text: " Task created successfully",
+        });
+      } else {
+      }
+    });
   });
 
+  const [parent] = useAutoAnimate();
+
   return (
-    <div className=" rounded-md bg-green-400 h-screen flex items-center justify-center">
-      <form
-        className="w-[90%] h-[400px] bg-gray flex flex-col items-center justify-center "
-        onSubmit={onHandleSubmit}
-      >
-        <div className="w-[70%] bg-black h-[45px] rounded-md overflow-hidden max-sm:h-[40px]">
-          <input
-            type="text"
-            className="h-full w-full border-blue-500 border rounded-md pl-5"
-            placeholder="Name a task"
-            {...register("title")}
-          />
-        </div>
-        <div className="w-[50%] bg-black h-[45px] rounded-md overflow-hidden mt-5 max-sm:h-[40px]">
-          <input
-            type="text"
-            className="h-full w-full border-blue-500 border rounded-md pl-5"
-            placeholder="Description"
-            {...register("description")}
-          />
-        </div>
-        <div className="mt-5">
-          <button
-            className="px-5 py-2 rounded-md bg-white text-green-400 font-medium border-blue-500 border max-sm:text-[13px] max-sm:px-4 py-1"
-            type="submit"
-          >
-            Create Task
-          </button>
-        </div>
-      </form>
-    </div>
+    <form
+      className="w-full h-screen bg-green-300 flex items-center flex-col"
+      onSubmit={onHandleSubmit}
+    >
+      <div className="mt-10 w-full flex items-center justify-center h-[45px]">
+        <input
+          type="text"
+          className="w-[70%] h-full rounded-full pl-4 max-sm:h-[40px] max-sm:text-[15px]"
+          placeholder="Name Task"
+          {...register("title")}
+        />
+      </div>
+      <div className="mt-4 w-full flex items-center justify-center h-[45px] max-sm:h-[40px] max-sm:text-[15px]">
+        <input
+          type="text"
+          className="w-[50%] h-full rounded-full pl-4 "
+          placeholder="Write Task"
+          {...register("description")}
+        />
+      </div>
+      <div className="mt-8">
+        <button
+          className="px-5 py-2 rounded-xl bg-white text-green-300 max-sm:text-[13px]"
+          ref={parent}
+        >
+          Create Task
+        </button>
+      </div>
+      <div className="flex flex-col w-[70%] h-auto mt-7">
+        <ViewScreen />
+      </div>
+    </form>
   );
 };
 
