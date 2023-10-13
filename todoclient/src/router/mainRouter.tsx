@@ -6,7 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 
 export const mainRouter = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: (
       <PrivateRoute>
         <Layout />
@@ -20,7 +20,7 @@ export const mainRouter = createBrowserRouter([
     ],
   },
   {
-    path: "/register",
+    path: "/",
     element: <RegisterScreen />,
   },
 ]);

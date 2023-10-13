@@ -40,7 +40,7 @@ const Reg = () => {
           timer: 2000,
           text: "Signed in successfully",
         }).then(() => {
-          navigate("/");
+          navigate("/home");
         });
       } else {
         Swal.fire({
