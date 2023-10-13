@@ -26,7 +26,7 @@ const ViewScreen = () => {
             </div>
           </div>
           <div
-            className="mr-5"
+            className="mr-5 hover:cursor-pointer hover:scale-110 duration-500 transition-all"
             onClick={() => {
               deleteOne(props._id);
             }}
