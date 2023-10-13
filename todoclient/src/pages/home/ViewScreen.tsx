@@ -21,7 +21,7 @@ const ViewScreen = () => {
                 {props?.title}
               </div>
               <div className="mb-3 text-[15px] w-[90%]  h-auto">
-                {props?.description} Descriptipon
+                {props?.description}
               </div>
             </div>
           </div>

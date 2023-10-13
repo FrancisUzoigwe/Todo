@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import useUser from "../../global/globalFile";
 import { createTodo } from "../../apis/todoApi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Swal from "sweetalert2";
 const HomeScreen = () => {
   const [state] = useUser();
   const Schema = yup.object({
@@ -20,10 +21,18 @@ const HomeScreen = () => {
     const { description, title } = data;
     createTodo(state, { description, title }).then((res: any) => {
       reset();
+      if (res) {
+        Swal.fire({
+          icon: "success",
+          text: " Task created successfully",
+        });
+      } else {
+      }
     });
   });
 
   const [parent] = useAutoAnimate();
+
   return (
     <form
       className="w-full h-screen bg-green-300 flex items-center flex-col"

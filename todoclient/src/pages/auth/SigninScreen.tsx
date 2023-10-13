@@ -4,10 +4,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinApi } from "../../apis/userApi";
 import { useNavigate } from "react-router-dom";
-import  useUser  from "../../global/globalFile";
+import useUser from "../../global/globalFile";
+import Swal from "sweetalert2";
 
 const Reg = () => {
   const [state, setState] = useUser();
+  // console.log(state);
+
   const navigate = useNavigate();
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -29,7 +32,23 @@ const Reg = () => {
     const { email, password } = data;
     await signinApi({ email, password }).then((res) => {
       setState(res);
-      navigate("/home");
+      if (res) {
+        Swal.fire({
+          icon: "success",
+          timer: 2000,
+          text: "Signed in successfully",
+        }).then(() => {
+          navigate("/home");
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          text: "Error occured, check and try again",
+          footer: "Network error? check if you connected to the internet",
+        }).then(() => {
+          navigate("/register");
+        });
+      }
     });
   });
 

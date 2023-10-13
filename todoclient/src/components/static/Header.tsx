@@ -1,6 +1,7 @@
 import useUser from "../../global/globalFile";
 import { TbLogout2 } from "react-icons/tb";
 import { SiTask } from "react-icons/si";
+import Swal from "sweetalert2";
 const Header = () => {
   const [state, setState] = useUser();
   return (
@@ -12,6 +13,10 @@ const Header = () => {
         <div
           className="text-3xl"
           onClick={() => {
+            Swal.fire({
+              text: "Logged out",
+              icon: "success",
+            });
             setState(null);
           }}
         >

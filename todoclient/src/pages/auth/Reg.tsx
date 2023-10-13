@@ -3,7 +3,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerApi } from "../../apis/userApi";
-import  useUser  from "../../global/globalFile";
+import useUser from "../../global/globalFile";
+import Swal from "sweetalert2";
 
 const Reg = () => {
   const [state, setState] = useUser();
@@ -29,6 +30,20 @@ const Reg = () => {
     await registerApi({ email, password, name }).then((res) => {
       //   navigate("/signin");
       setState(res);
+      if (res) {
+        Swal.fire({
+          icon: "success",
+          text: "Account created successfully, proceed to signin",
+          timerProgressBar: true,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          text: "Error occured, check and try again",
+          timer: 3000,
+          footer: "Why this error? ",
+        });
+      }
     });
   });
 
