@@ -9,7 +9,11 @@ export const createTodo = async (req: Request, res: Response) => {
     const user = await userModel.findById(userID);
     if (user) {
       const { title, description } = req.body;
-      const todo = await todoModel.create({ title, description, users: user?._id });
+      const todo = await todoModel.create({
+        title,
+        description,
+        users: user?._id,
+      });
       user?.todos.push(new mongoose.Types.ObjectId(todo?._id));
       user?.save();
       return res.status(201).json({
@@ -21,32 +25,36 @@ export const createTodo = async (req: Request, res: Response) => {
         message: "User not found, please sign up",
       });
     }
-  } catch (error:any) {
+  } catch (error: any) {
     return res.status(400).json({
       message: `Error occured while creating todo ${error.message}`,
-      error
+      error,
     });
   }
 };
 
 export const readOne = async (req: Request, res: Response) => {
   try {
-    const { todoID } = req.params;
-    const tasked = await todoModel.findById(todoID).populate({
-        path: "todos",
-        options: {
-            sort: {
-              createdAt: -1,
-            },
-          },
-    });
-    return res.status(200).json({
-      message: "Reading one task ",
-      data: tasked,
-    });
-  } catch (error) {
+    const { userID } = req.params;
+
+    const user = await userModel.findById(userID)
+
+    if(user){
+      const tasked =await todoModel.find()
+      return res.status(200).json({
+        message:"success",
+        data:tasked
+      })
+    }else{
+      return res.status(404).json({
+        message:"user not found"
+      })
+    }
+
+  } catch (error: any) {
     return res.status(400).json({
-      message: "Error occured while reading one todo",
+      message: `Error occured while reading one todo${error.message}`,
+      error
     });
   }
 };
@@ -55,6 +63,7 @@ export const deleteOne = async (req: Request, res: Response) => {
   try {
     const { todoID } = req.params;
     const tasked = await todoModel.findByIdAndDelete(todoID);
+
     return res.status(200).json({
       message: "Task deleted successfully ",
       data: tasked,
@@ -79,4 +88,3 @@ export const viewAllTodo = async (req: Request, res: Response) => {
     });
   }
 };
-

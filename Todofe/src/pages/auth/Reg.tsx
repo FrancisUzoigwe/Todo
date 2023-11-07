@@ -5,11 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerApi } from "../../apis/userApi";
 import useUser from "../../global/globalFile";
 import Swal from "sweetalert2";
+import Loader from "../../components/common/Loader";
 
 const Reg = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [state, setState] = useUser();
   console.log(typeof state);
-  
+
   const [checked, setChecked] = useState<boolean>(false);
 
   const Schema = yup.object({
@@ -29,8 +31,9 @@ const Reg = () => {
 
   const onHandleSubmit = handleSubmit(async (data: any) => {
     const { email, password, name } = data;
+    setLoading(true);
     await registerApi({ email, password, name }).then((res) => {
-      //   navigate("/signin");
+      setLoading(false);
       setState(res);
       if (res) {
         Swal.fire({
@@ -45,13 +48,15 @@ const Reg = () => {
           timer: 3000,
           footer: "Why this error? ",
         });
+        // setLoading(false);
       }
     });
   });
 
   return (
     <div>
-      <form onSubmit={onHandleSubmit}>
+      {loading ? (<Loader />):
+      (<form onSubmit={onHandleSubmit}>
         <div className="mt-[25px] relative rounded-md">
           <div className="absolute bg-white px-1 text-[13px] max-sm:text-[10px] max-sm:mt-[-8px] font-semibold ml-[15px] mt-[-10px] ">
             Enter Name:
@@ -127,7 +132,8 @@ const Reg = () => {
           </button>
         </div>
         {/* <div>Have an account? <Link to="/signin">Signin</Link></div> */}
-      </form>
+      </form>)
+      }
     </div>
   );
 };

@@ -22,7 +22,11 @@ const createTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield userModel_1.default.findById(userID);
         if (user) {
             const { title, description } = req.body;
-            const todo = yield todoModel_1.default.create({ title, description, users: user === null || user === void 0 ? void 0 : user._id });
+            const todo = yield todoModel_1.default.create({
+                title,
+                description,
+                users: user === null || user === void 0 ? void 0 : user._id,
+            });
             user === null || user === void 0 ? void 0 : user.todos.push(new mongoose_1.default.Types.ObjectId(todo === null || todo === void 0 ? void 0 : todo._id));
             user === null || user === void 0 ? void 0 : user.save();
             return res.status(201).json({
@@ -39,30 +43,32 @@ const createTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         return res.status(400).json({
             message: `Error occured while creating todo ${error.message}`,
-            error
+            error,
         });
     }
 });
 exports.createTodo = createTodo;
 const readOne = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { todoID } = req.params;
-        const tasked = yield todoModel_1.default.findById(todoID).populate({
-            path: "todos",
-            options: {
-                sort: {
-                    createdAt: -1,
-                },
-            },
-        });
-        return res.status(200).json({
-            message: "Reading one task ",
-            data: tasked,
-        });
+        const { userID } = req.params;
+        const user = yield userModel_1.default.findById(userID);
+        if (user) {
+            const tasked = yield todoModel_1.default.find();
+            return res.status(200).json({
+                message: "success",
+                data: tasked
+            });
+        }
+        else {
+            return res.status(404).json({
+                message: "user not found"
+            });
+        }
     }
     catch (error) {
         return res.status(400).json({
-            message: "Error occured while reading one todo",
+            message: `Error occured while reading one todo${error.message}`,
+            error
         });
     }
 });
